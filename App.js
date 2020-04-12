@@ -8,6 +8,8 @@ import HomePage from './src/Pages/HomePage';
 import NewsPage from './src/Pages/NewsPage';
 import CategoryPage from './src/Pages/CategoryPage';
 import DetailsPage from './src/Pages/DetailsPage';
+import RegisterPage from './src/Pages/Register';
+import LoginPage from './src/Pages/Login';
 
 const HomeStack = createStackNavigator({
   Home: HomePage,
@@ -20,10 +22,20 @@ const CategoryStack = createStackNavigator({
   Details: DetailsPage
 });
 
+const RegisterStack = createStackNavigator({
+  Register: RegisterPage,
+});
+
+const LoginStack = createStackNavigator({
+  Login: LoginPage,
+}); 
+
 export default createAppContainer(createBottomTabNavigator(
   {
     Home: HomeStack,
     Category: CategoryStack,
+    Register: RegisterStack,
+    Login: LoginStack
   }, {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
@@ -33,6 +45,10 @@ export default createAppContainer(createBottomTabNavigator(
           iconName = `ios-today`;
         } else if (routeName === 'Category') {
           iconName = `ios-apps`;
+        } else if (routeName === 'Register') {
+          iconName = `ios-people`;
+        } else if (routeName === 'Login') {
+          iconName = `ios-laptop`;
         } 
         return <Ionicons name={iconName} size={25} color={tintColor} />;
       },

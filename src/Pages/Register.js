@@ -2,20 +2,20 @@ import React from 'react';
 import { Alert, Dimensions, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { Block, Button, Input, Text, theme, } from 'galio-framework';
-
 import { LinearGradient } from 'expo-linear-gradient';
 import { materialTheme } from '../constants/';
 import { HeaderHeight } from "../constants/utils";
+import * as EmailValidator from 'email-validator';
 
 const { height, width } = Dimensions.get('window');
 
 export default class SignUp extends React.Component {
   state = {
-    user: '-',
-    email: '-',
-    password: '-',
-    shortId: '-',
-    longId: '-',
+    user: '',
+    email: '',
+    password: '',
+    shortId: '',
+    longId: '',
     grade: '',
     active: {
       user: false,
@@ -23,6 +23,7 @@ export default class SignUp extends React.Component {
       password: false,
       shortId: false,
       longId: false,
+      grade: false
     },
   }
 
@@ -36,6 +37,68 @@ export default class SignUp extends React.Component {
     this.setState({ active: active});
   }
 
+  handlePress = () => {
+    const { user, email, password, shortId, longId, grade } = this.state;
+    fetch('https://news-mobile-app.herokuapp.com/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name : user,
+          email,
+          password,
+          shortId,
+          longId,
+          grade
+        })
+    })
+      .then((resp) => {
+          this.props.navigation.navigate('Login');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  userRegister() {
+    //const { navigation: { navigate },} = this.props;
+    //const { password,password2 } =this.state;
+    //const passwordLength = password.length ;
+    if (!this.state.user) {
+        Alert.alert( 'Enter the name !')
+        return
+    }
+
+    if (!this.state.email) {
+        Alert.alert( 'Enter the email !')
+        return
+    }
+
+    if (!EmailValidator.validate(this.state.email)) {
+      Alert.alert('Invalid email format !');
+      this.setState({
+        email:''
+      })
+      return
+    }
+
+    if (!this.state.password) {
+       Alert.alert( 'Enter the password !')
+       return
+    } 
+
+    if (!this.state.password) {
+      Alert.alert( 'Enter the password !')
+      return
+    }
+    this.handlePress();
+    
+    //this.setState({
+    //  animating:true,
+    //})
+ }
+  
   render() {
     const { navigation } = this.props;
     const placeholder = {
@@ -191,7 +254,8 @@ export default class SignUp extends React.Component {
                       shadowless
                       style={{ height: 48 }}
                       color={materialTheme.COLORS.BUTTON_COLOR}
-                      onPress={() => navigation.navigate('Login')}
+                      //onPress={() => navigation.navigate('Login')}
+                      onPress={() => this.userRegister()}
                     >
                       SIGN UP
                     </Button>

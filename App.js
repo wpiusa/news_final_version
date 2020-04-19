@@ -10,7 +10,7 @@ import CategoryPage from './src/Pages/CategoryPage';
 import DetailsPage from './src/Pages/DetailsPage';
 import RegisterPage from './src/Pages/Register';
 import LoginPage from './src/Pages/Login';
-
+import ProfilePage from './src/Pages/Profile';
 const HomeStack = createStackNavigator({
   Home: HomePage,
   Details: DetailsPage
@@ -28,6 +28,7 @@ const RegisterStack = createStackNavigator({
 
 const LoginStack = createStackNavigator({
   Login: LoginPage,
+  Profile: ProfilePage
 }); 
 
 export default createAppContainer(createBottomTabNavigator(

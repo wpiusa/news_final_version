@@ -1,3 +1,4 @@
+import { Alert, Dimensions, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
 const BASE_URL = 'https://news-mobile-app.herokuapp.com/';
 const API_URL = BASE_URL + 'api/';
 const getData = async (endpoint) => {
@@ -14,6 +15,8 @@ const getData = async (endpoint) => {
     }
     return result;
 }
+
+
 
 export const getArticle = async (article_title) => {
     return getData('article/title/' + article_title);

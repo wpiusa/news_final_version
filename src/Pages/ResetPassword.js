@@ -1,49 +1,21 @@
 import React from 'react';
 import { Alert, Dimensions, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import { Block, Button, Input, Text, theme, } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
-import { materialTheme } from '../constants';
+import { materialTheme } from '../constants/';
 import { HeaderHeight } from "../constants/utils";
 import * as EmailValidator from 'email-validator';
-
 const { height, width } = Dimensions.get('window');
 
-export default class SignUp extends React.Component {
+export default class ResetPassword extends React.Component {
   state = {
-    user: '',
     email: '',
     password: '',
-    shortId: '',
-    longId: '',
-    grade: '',
-    school: '',
-    data: [],
     active: {
-      user: false,
       email: false,
       password: false,
-      shortId: false,
-      longId: false,
-      grade: false,
- 
     },
   }
-
-  componentDidMount = () => {
-    fetch('https://news-mobile-app.herokuapp.com/api/school/all', {
-       method: 'GET'
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-       this.setState({
-          data: responseJson
-       })
-    })
-    .catch((error) => {
-       console.error(error);
-    });
- }
 
   handleChange = (name, value) => {
     this.setState({ [name]: value});
@@ -56,42 +28,24 @@ export default class SignUp extends React.Component {
   }
 
   handlePress = () => {
-    const { user, email, password, shortId, longId, grade } = this.state;
-    fetch('https://news-mobile-app.herokuapp.com/api/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name : user,
-          email,
-          password,
-          shortId,
-          longId,
-          grade
-        })
+    const { email, password } = this.state;
+    fetch(`https://news-mobile-app.herokuapp.com/api/users/email/${email}/password/${password}`, {
+       method: 'GET'
     })
-      .then((resp) => {
-          this.props.navigation.navigate('Login');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .then((response) => response.json())
+    .then((responseJson) => {
+       console.log('password changed')
+    })
+    .catch((error) => {
+       console.error(error);
+    });
   }
 
-  userRegister() {
-    //const { navigation: { navigate },} = this.props;
-    //const { password,password2 } =this.state;
-    //const passwordLength = password.length ;
-    if (!this.state.user) {
-        Alert.alert( 'Enter the name !')
-        return
-    }
-
+  userLogin() {
     if (!this.state.email) {
-        Alert.alert( 'Enter the email !')
-        return
-    }
+      Alert.alert('Enter the email!');
+      return
+    } 
 
     if (!EmailValidator.validate(this.state.email)) {
       Alert.alert('Invalid email format !');
@@ -102,35 +56,22 @@ export default class SignUp extends React.Component {
     }
 
     if (!this.state.password) {
-       Alert.alert( 'Enter the password !')
-       return
-    } 
-
-    if (!this.state.password) {
-      Alert.alert( 'Enter the password !')
+      Alert.alert('Enter the password!');
       return
     }
     this.handlePress();
-    
     //this.setState({
     //  animating:true,
     //})
  }
-  
+ 
   render() {
     const { navigation } = this.props;
-    const { data } = this.state;
     const placeholder = {
       label: 'Select a Grade...',
       value: null,
       color: '#9EA0A4',
     };
-    const schoolPlaceholder = {
-      label: 'Select a School...',
-      value: null,
-      color: '#9EA0A4',
-    };
-
     return (
       <LinearGradient
         start={{ x: 0, y: 0 }}
@@ -183,27 +124,12 @@ export default class SignUp extends React.Component {
                 </Block>
               </Block>
               <Text color='#fff' center size={theme.SIZES.FONT * 0.875}>
-                Student Sign UP
-              </Text>
-              <Text center color={theme.COLORS.WHITE} size={theme.SIZES.FONT * 0.75}>
-                    Already have an account? Sign In
-              </Text>      
+                Reset Password
+              </Text>  
             </Block>
 
             <Block flex={1} center space="between">
               <Block center>
-                <Input
-                  bgColor='transparent'
-                  placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
-                  borderless
-                  color="white"
-                  placeholder="Full Name"
-                  autoCapitalize="none"
-                  style={[styles.input, this.state.active.user ? styles.inputActive : null]}
-                  onChangeText={text => this.handleChange('user', text)}
-                  onBlur={() => this.toggleActive('user')}
-                  onFocus={() => this.toggleActive('user')}
-                />
                 <Input
                   bgColor='transparent'
                   placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
@@ -224,57 +150,12 @@ export default class SignUp extends React.Component {
                   color="white"
                   password
                   viewPass
-                  placeholder="Password"
+                  placeholder="New Password"
                   iconColor="white"
                   style={[styles.input, this.state.active.password ? styles.inputActive : null]}
                   onChangeText={text => this.handleChange('password', text)}
                   onBlur={() => this.toggleActive('password')}
                   onFocus={() => this.toggleActive('password')}
-                />
-                <Input
-                  bgColor='transparent'
-                  placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
-                  borderless
-                  color="white"
-                  shortId
-                  viewPass
-                  placeholder="Short ID"
-                  iconColor="white"
-                  style={[styles.input, this.state.active.shortId ? styles.inputActive : null]}
-                  onChangeText={text => this.handleChange('shortId', text)}
-                  onBlur={() => this.toggleActive('shortId')}
-                  onFocus={() => this.toggleActive('shortId')}
-                />
-                <Input
-                  bgColor='transparent'
-                  placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
-                  borderless
-                  color="white"
-                  longId
-                  viewPass
-                  placeholder="Long ID"
-                  iconColor="white"
-                  style={[styles.input, this.state.active.longId ? styles.inputActive : null]}
-                  onChangeText={text => this.handleChange('longId', text)}
-                  onBlur={() => this.toggleActive('longId')}
-                  onFocus={() => this.toggleActive('longId')}
-                />
-                <RNPickerSelect
-                  placeholder={placeholder}
-                  onValueChange={(value) => this.setState({ grade: value})}
-                  items={[
-                      { label: 'Freshman ', value: 'Freshman ' },
-                      { label: 'Sophomore', value: 'Sophomore' },
-                      { label: 'Junior', value: 'Junior'},
-                      { label: 'Senior', value: 'Senior'},
-                  ]}
-                  style={pickerSelectStyles}
-                />
-                <RNPickerSelect
-                  placeholder={schoolPlaceholder}
-                  onValueChange={(value) => this.setState({ school: value})}
-                  items={data}
-                  style={pickerSelectStyles}
                 />
                 <Block style={styles.container}>
                   
@@ -283,10 +164,9 @@ export default class SignUp extends React.Component {
                       shadowless
                       style={{ height: 48 }}
                       color={materialTheme.COLORS.BUTTON_COLOR}
-                      //onPress={() => navigation.navigate('Login')}
-                      onPress={() => this.userRegister()}
+                      onPress={() => this.userLogin()}
                     >
-                      SIGN UP
+                      Change Password
                     </Button>
                 </Block>
               </Block>

@@ -5,40 +5,29 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { materialTheme } from '../constants/';
 import { HeaderHeight } from "../constants/utils";
 import * as EmailValidator from 'email-validator';
+import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 const { height, width } = Dimensions.get('window');
 
-export default class Login extends React.Component {
+export default class Support extends React.Component {
   state = {
-    email: '',
-    password: '',
-    active: {
-      email: false,
-      password: false,
-    },
+    title: '',
+    desc: '',
   }
 
   handleChange = (name, value) => {
     this.setState({ [name]: value});
   }
 
-  toggleActive = (name) => {
-    const { active } = this.state;
-    active[name] =!active[name];
-    this.setState({ active: active});
-  }
-
   handlePress = () => {
-    const { email, password } = this.state;
-    console.log(email);
-    console.log(password);
+    const { title, desc } = this.state;
     fetch('https://news-mobile-app.herokuapp.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email,
-          password,
+          title,
+          desc,
         })
     })
       .then((resp) => {
@@ -49,37 +38,21 @@ export default class Login extends React.Component {
       });
   }
 
-  userLogin() {
-    if (!this.state.email) {
-      Alert.alert('Enter the email!');
+  userSupport() {
+    if (!this.state.title) {
+      Alert.alert('Enter the support title!');
       return
     } 
 
-    if (!EmailValidator.validate(this.state.email)) {
-      Alert.alert('Invalid email format !');
-      this.setState({
-        email:''
-      })
-      return
-    }
-
-    if (!this.state.password) {
-      Alert.alert('Enter the password!');
+    if (!this.state.desc) {
+      Alert.alert('Enter the support decription!');
       return
     }
     this.handlePress();
-    //this.setState({
-    //  animating:true,
-    //})
  }
  
   render() {
-    const { navigation } = this.props;
-    const placeholder = {
-      label: 'Select a Grade...',
-      value: null,
-      color: '#9EA0A4',
-    };
+  
     return (
       <LinearGradient
         start={{ x: 0, y: 0 }}
@@ -131,18 +104,6 @@ export default class Login extends React.Component {
                     />
                 </Block>
               </Block>
-              <Text color='#fff' center size={theme.SIZES.FONT * 0.875}>
-                Student Sign UP
-              </Text>
-              <Text 
-                  center 
-                  color={theme.COLORS.WHITE} 
-                  size={theme.SIZES.FONT * 0.75}
-                  style={{marginTop:20}}
-                >
-                    {"Don't have an account? Register"}
-              </Text>      
-             
             </Block>
 
             <Block flex={1} center space="between">
@@ -152,28 +113,17 @@ export default class Login extends React.Component {
                   placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
                   borderless
                   color="white"
-                  type="email-address"
-                  placeholder="Email"
+                  placeholder="Support Title"
                   autoCapitalize="none"
-                  style={[styles.input, this.state.active.email ? styles.inputActive : null]}
-                  onChangeText={text => this.handleChange('email', text)}
-                  onBlur={() => this.toggleActive('email')}
-                  onFocus={() => this.toggleActive('email')}
+                  style={[styles.input, styles.inputActive]}
+                  onChangeText={text => this.handleChange('title', text)}
                 />
-                <Input
-                  bgColor='transparent'
-                  placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
-                  borderless
-                  color="white"
-                  password
-                  viewPass
-                  placeholder="Password"
-                  iconColor="white"
-                  style={[styles.input, this.state.active.password ? styles.inputActive : null]}
-                  onChangeText={text => this.handleChange('password', text)}
-                  onBlur={() => this.toggleActive('password')}
-                  onFocus={() => this.toggleActive('password')}
+                <Block style={styles.container}>
+                    <AutoGrowingTextInput 
+                      style={[styles.input, styles.textArea]} 
+                      placeholder={'Your Support Message'}
                 />
+                </Block>
                 <Block style={styles.container}>
                   
                   <Block flex top style={{ marginTop: 10 }}>
@@ -181,9 +131,9 @@ export default class Login extends React.Component {
                       shadowless
                       style={{ height: 48 }}
                       color={materialTheme.COLORS.BUTTON_COLOR}
-                      onPress={() => this.userLogin()}
+                      onPress={() => this.userSupport()}
                     >
-                      SIGN IN
+                      Submit Support
                     </Button>
                 </Block>
               </Block>
@@ -193,18 +143,6 @@ export default class Login extends React.Component {
             </Block>
           </KeyboardAvoidingView>
         </Block>
-        <Block flex top style={{ marginTop: 20 }}>
-                <Button color="transparent" shadowless onPress={() => this.props.navigation.navigate('ResetPassword')}>
-                  <Text
-                    center
-                    color={theme.COLORS.WHITE}
-                    size={theme.SIZES.FONT * 0.75}
-                    style={{marginTop:20}}
-                  >
-                    {"Reset Password"}
-                  </Text>
-                </Button>
-      </Block>
       </LinearGradient>
     );
   }
@@ -235,6 +173,10 @@ const styles = StyleSheet.create({
     },
     inputActive: {
         borderBottomColor: "white"
+    },
+    textArea: {
+      borderBottomColor: "white",
+      color: 'white'
     },
     container: {
         flex: 1,

@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, Dimensions, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
 import { Block, Text, theme, Button } from 'galio-framework';
 
 const { width } = Dimensions.get('screen');
 
 export default class Menu extends React.Component {
+  
   renderCategories = () => {
+   
     return (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.categoryList}>
         <Block flex>

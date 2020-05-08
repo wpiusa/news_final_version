@@ -1,5 +1,15 @@
 import React from 'react';
-import { Alert, Dimensions, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { 
+  Alert, 
+  Dimensions, 
+  StyleSheet, 
+  KeyboardAvoidingView, 
+  Platform, 
+  View,
+  ActivityIndicator,
+  AsyncStorage, 
+} from 'react-native';
+
 import { Block, Button, Input, Text, theme, } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 import { materialTheme } from '../constants/';
@@ -11,11 +21,15 @@ export default class Login extends React.Component {
   state = {
     email: '',
     password: '',
+    animating: false,
     active: {
       email: false,
       password: false,
     },
   }
+
+  closeActivityIndicator = () => setTimeout(() => this.setState({
+    animating: false }), 3000)
 
   handleChange = (name, value) => {
     this.setState({ [name]: value});
@@ -27,10 +41,10 @@ export default class Login extends React.Component {
     this.setState({ active: active});
   }
 
+
   handlePress = () => {
     const { email, password } = this.state;
-    console.log(email);
-    console.log(password);
+    
     fetch('https://news-mobile-app.herokuapp.com/api/users/login', {
         method: 'POST',
         headers: {
@@ -42,9 +56,21 @@ export default class Login extends React.Component {
         })
     })
       .then((resp) => {
-          this.props.navigation.navigate('Menu');
+          this.closeActivityIndicator();
+          if(resp.status ===200) {
+            AsyncStorage.setItem('userid', this.state.email);
+            this.props.navigation.navigate('Menu'); 
+          } else {
+            if(resp.status === 404) {
+              Alert.alert( 'Login Failed!', 'Invalid login Id!');
+            } else {
+              Alert.alert( 'Login Failed!', 'Invalid password!');
+            }
+            this.setState({ animating: false});
+          }  
       })
       .catch((error) => {
+        Alert.alert( 'Login Failed!', 'Please try again!')
         console.error(error);
       });
   }
@@ -52,6 +78,9 @@ export default class Login extends React.Component {
   userLogin() {
     if (!this.state.email) {
       Alert.alert('Enter the email!');
+      this.setState({
+        email:''
+      })
       return
     } 
 
@@ -65,15 +94,19 @@ export default class Login extends React.Component {
 
     if (!this.state.password) {
       Alert.alert('Enter the password!');
+      this.setState({
+        password:''
+      })
       return
     }
+    this.setState({
+      animating:true,
+    })
     this.handlePress();
-    //this.setState({
-    //  animating:true,
-    //})
  }
  
   render() {
+    const animating = this.state.animating;  // get animating state
     const { navigation } = this.props;
     const placeholder = {
       label: 'Select a Grade...',
@@ -191,6 +224,12 @@ export default class Login extends React.Component {
               </Block>
               
             </Block>
+            <ActivityIndicator
+                animating = {animating}
+                color = '#1BD1F9'
+                size = "large"
+                style = {styles.activityIndicator}
+            />
           </KeyboardAvoidingView>
         </Block>
         <Block flex top style={{ marginTop: 20 }}>
@@ -264,4 +303,10 @@ const pickerSelectStyles = StyleSheet.create({
       color: 'white',
       paddingRight: 30, // to ensure the text is never behind the icon
     },
+    activityIndicator: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 80
+   }
   });

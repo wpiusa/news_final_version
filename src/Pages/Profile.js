@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform, View } from 'react-native';
+import { 
+    StyleSheet, 
+    Dimensions, 
+    ScrollView, 
+    Image, 
+    ImageBackground, 
+    Platform, 
+    View,
+    AsyncStorage 
+} from 'react-native';
+
 import { Block, Text, theme } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from '../Components/Icon';
@@ -10,7 +20,44 @@ const { width } = Dimensions.get('screen');
 const thumbMeasure = (width - 48 - 32) / 3;
 
 export default class Profile extends React.Component {
+    state = {
+        data: [],
+    };  
+
+    componentDidMount() {
+        this.getUserId();
+    }
+     
+    getUserId = async () => {
+        console.log('get id');
+        const userid = await AsyncStorage.getItem('userid') ;
+        //console.log('profile user id');
+        //console.log(userid);
+        this.getUserProfile(userid); //call api and send user id to function
+        return;
+    }
+
+    getUserProfile =  (userid) => {
+        console.log('inside getuserProfile user id');
+        console.log(userid);
+        fetch(`https://news-mobile-app.herokuapp.com/api/users/email/${userid}`, {
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+              this.setState({
+                  data: responseJson
+              })
+            })
+            .catch((error) => {
+            console.error(error);
+            });  
+    }
+
     render(){
+        const { data } = this.state;
+        const { name, shortId, longId, grade, status } = data;
         return(
             <Block flex style={styles.Profile}>
                 <ImageBackground
@@ -25,7 +72,7 @@ export default class Profile extends React.Component {
                                 size={28}
                                 style={{ paddingBottom: 8}}
                             >
-                                James Brown
+                                {name}
                             </Text>
                             <Block row space="between">
                                 <Block row>
@@ -35,7 +82,7 @@ export default class Profile extends React.Component {
                                         muted
                                         style={styles.grade}
                                     >
-                                        Freshman
+                                        {grade}
                                     </Text>
                                 </Block>
                             </Block>
@@ -49,11 +96,11 @@ export default class Profile extends React.Component {
                             <Block row space="between" style={{ padding: theme.SIZES.BASE }}>
                                 <Block middle>
                                     <Text bold size={12} style={{marginBottom: 8}}>1234</Text>
-                                    <Text muted size={12}>Short ID</Text>
+                                    <Text muted size={12}>{shortId}</Text>
                                 </Block>
                                 <Block middle>
                                     <Text bold size={12} style={{marginBottom: 8}}>12345678</Text>
-                                    <Text muted size={12}>Long ID</Text>
+                                    <Text muted size={12}>{longId}</Text>
                                 </Block>
                             </Block>
                             <Block
@@ -61,7 +108,7 @@ export default class Profile extends React.Component {
                                 space="between"
                                 style={{ paddingVertical: 16, alignItems: 'baseline'}}
                             >
-                                <Text>Approved</Text>
+                                <Text>{status}</Text>
                             </Block>
                         </ScrollView>
                     </Block>

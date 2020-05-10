@@ -6,14 +6,17 @@ import { getArticleDetail } from '../../Api';
 import HTML from 'react-native-render-html';
 
 export default class DetailsPage extends React.Component {
-    static navigationOptions = {
-        headerShown: false
-    };
+    static navigationOption = ({ navigation }) => {
+        return {
+          title: navigation.getParam('article', null)
+        }
+    }
 
     constructor(props) {
+       
         super(props);
         this.state = {
-            item: props.navigation.getParam('article', null),
+            item: this.props.navigation.getParam('article', null),
             otherItems: [],
             saved: false,
             loading: true

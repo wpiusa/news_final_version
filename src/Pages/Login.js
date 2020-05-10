@@ -107,7 +107,7 @@ export default class Login extends React.Component {
  
   render() {
     const animating = this.state.animating;  // get animating state
-    const { navigation } = this.props;
+    
     const placeholder = {
       label: 'Select a Grade...',
       value: null,
@@ -167,15 +167,16 @@ export default class Login extends React.Component {
               <Text color='#fff' center size={theme.SIZES.FONT * 0.875}>
                 Student Sign UP
               </Text>
-              <Text 
-                  center 
-                  color={theme.COLORS.WHITE} 
-                  size={theme.SIZES.FONT * 0.75}
-                  style={{marginTop:20}}
-                >
+              <Button color="transparent" shadowless onPress={() => this.props.navigation.navigate('Register')}>
+                  <Text
+                    center
+                    color={theme.COLORS.WHITE}
+                    size={theme.SIZES.FONT * 0.75}
+                    style={{marginTop:20}}
+                  >
                     {"Don't have an account? Register"}
-              </Text>      
-             
+                  </Text>
+                </Button>
             </Block>
 
             <Block flex={1} center space="between">

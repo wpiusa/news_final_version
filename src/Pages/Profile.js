@@ -66,49 +66,44 @@ export default class Profile extends React.Component {
                     imageStyle={styles.profileImage}
                 >
                     <Block flex style={styles.profileDetails}>
-                        <Block style={styles.profileTexts}>
-                            <Text 
-                                color="white" 
-                                size={28}
-                                style={{ paddingBottom: 8}}
-                            >
-                                {name}
-                            </Text>
-                            <Block row space="between">
-                                <Block row>
-                                    <Text
-                                        color="white"
-                                        size={16}
-                                        muted
-                                        style={styles.grade}
-                                    >
+                        <LinearGradient colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']} style={styles.gradient} />
+                    </Block>
+                </ImageBackground>
+                <Block flex={1.5}>
+                    <Block style={styles.digitalId}>
+                        <ScrollView verticL={true} showsVerticalScrollIndicator={false}>
+                            <Block row  style={{ padding: theme.SIZES.BASE }}>
+                                <Block>
+                                    <Text 
+                                        size={20}
+                                        style={{ paddingBottom: 2}}
+                                        >
+                                        {name}
+                                    </Text>
+                                </Block>
+                                
+                            </Block>
+                            <Block row  style={{ padding: theme.SIZES.BASE }}>
+                                <Block>
+                                    <Text 
+                                        size={20}
+                                        style={{ paddingBottom: 4}}
+                                        >
                                         {grade}
                                     </Text>
                                 </Block>
                             </Block>
-                        </Block>
-                        <LinearGradient colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']} style={styles.gradient} />
-                    </Block>
-                </ImageBackground>
-                <Block flex={0.7}>
-                    <Block style={styles.digitalId}>
-                        <ScrollView verticL={true} showsVerticalScrollIndicator={false}>
-                            <Block row space="between" style={{ padding: theme.SIZES.BASE }}>
-                                <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>1234</Text>
-                                    <Text muted size={12}>{shortId}</Text>
-                                </Block>
-                                <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>12345678</Text>
-                                    <Text muted size={12}>{longId}</Text>
-                                </Block>
+                            <Block row style={{ padding: 2 }}>
+                                <Text bold size={20} style={{marginBottom: 4}}>Short ID:</Text>
+                                <Text muted size={20} style={{color:'blue', paddingHorizontal:4}}>{shortId}</Text>
                             </Block>
-                            <Block
-                                row
-                                space="between"
-                                style={{ paddingVertical: 16, alignItems: 'baseline'}}
-                            >
-                                <Text>{status}</Text>
+                            <Block row style={{ padding: 2 }}>
+                                <Text bold size={20} style={{marginBottom: 4}}>Long ID:</Text>
+                                <Text muted size={20} style={{color:'blue', paddingHorizontal:4}}>{longId}</Text>
+                            </Block>
+                            <Block row style={{ padding: 2 }}>
+                                <Text bold size={20} style={{marginBottom: 6}}>Status:</Text>
+                                <Text muted size={20} style={{color:'red', paddingHorizontal:4}}>{status}</Text>
                             </Block>
                         </ScrollView>
                     </Block>
@@ -168,4 +163,4 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         zIndex: 2,
     }
-});    
+});   

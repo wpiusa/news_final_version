@@ -13,7 +13,7 @@ export default class Menu extends React.Component {
         <Block flex>
             <Block flex card style={[styles.category, styles.shadow]}>
                 <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('Home')}>
+                    onPress={() => this.props.navigation.navigate('Category')}>
                   <ImageBackground
                           source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/news.jpeg' }}
                           style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 252 }]}

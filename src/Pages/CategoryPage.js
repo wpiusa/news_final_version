@@ -1,5 +1,15 @@
 import React from 'react';
-import { SafeAreaView, Text, TouchableOpacity, FlatList, Image, StatusBar, StyleSheet, View } from "react-native";
+import { 
+    SafeAreaView, 
+    Text, 
+    TouchableOpacity, 
+    FlatList, 
+    Image, 
+    StatusBar, 
+    StyleSheet, 
+    View,
+    AsyncStorage, 
+} from "react-native";
 import Constants from 'expo-constants';
 import Colors from '../../Colors';
 import { getCategories } from '../../Api';
@@ -32,7 +42,8 @@ export default class CategoryPage extends React.Component {
     }
     
     openCategory = (item) => {
-        this.props.navigation.navigate('News', item)
+        AsyncStorage.setItem('catTitle', item.title);
+        this.props.navigation.navigate('News');
     }
 
     renderRow = ({ item }) => {

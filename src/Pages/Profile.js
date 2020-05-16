@@ -29,10 +29,7 @@ export default class Profile extends React.Component {
     }
      
     getUserId = async () => {
-        console.log('get id');
         const userid = await AsyncStorage.getItem('userid') ;
-        //console.log('profile user id');
-        //console.log(userid);
         this.getUserProfile(userid); //call api and send user id to function
         return;
     }
@@ -57,7 +54,19 @@ export default class Profile extends React.Component {
 
     render(){
         const { data } = this.state;
-        const { name, shortId, longId, grade, status } = data;
+        const { 
+            name, 
+            shortId, 
+            longId, 
+            grade, 
+            status, 
+            ASB, 
+            sixPeriod, 
+            lunchPeriod 
+        } = data;
+        const asbStatus = ASB ? "Yes": "No";
+        const sixPeriodStatus = sixPeriod ? "Yes": "No";
+        const lunchPeriodStatus = lunchPeriod ? "Yes": "No";
         return(
             <Block flex style={styles.Profile}>
                 <ImageBackground
@@ -72,38 +81,43 @@ export default class Profile extends React.Component {
                 <Block flex={1.5}>
                     <Block style={styles.digitalId}>
                         <ScrollView verticL={true} showsVerticalScrollIndicator={false}>
-                            <Block row  style={{ padding: theme.SIZES.BASE }}>
-                                <Block>
-                                    <Text 
-                                        size={20}
-                                        style={{ paddingBottom: 2}}
-                                        >
-                                        {name}
-                                    </Text>
+                            <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                    <Block middle>
+                                        <Text bold size={12} style={{marginBottom: 8}}>{name}</Text>
+                                    </Block>
+                                    <Block middle>
+                                        <Text bold size={12} style={{marginBottom: 8}}>{grade}</Text>
+                                    </Block>
+                           </Block>
+                           <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                <Block middle>
+                                    <Text bold size={12} style={{marginBottom: 8}}>{shortId}</Text>
+                                    <Text muted size={12}>Short ID</Text>
                                 </Block>
-                                
-                            </Block>
-                            <Block row  style={{ padding: theme.SIZES.BASE }}>
-                                <Block>
-                                    <Text 
-                                        size={20}
-                                        style={{ paddingBottom: 4}}
-                                        >
-                                        {grade}
-                                    </Text>
+                                <Block middle>
+                                    <Text bold size={12} style={{marginBottom: 8}}>{longId}</Text>
+                                    <Text muted size={12}>Long Id</Text>
                                 </Block>
                             </Block>
-                            <Block row style={{ padding: 2 }}>
-                                <Text bold size={20} style={{marginBottom: 4}}>Short ID:</Text>
-                                <Text muted size={20} style={{color:'blue', paddingHorizontal:4}}>{shortId}</Text>
+                            <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                <Block middle>
+                                    <Text bold size={12} style={{marginBottom: 8}}>{asbStatus}</Text>
+                                    <Text muted size={12}>ASB</Text>
+                                </Block>
+                                <Block middle>
+                                    <Text bold size={12} style={{marginBottom: 8}}>{sixPeriodStatus}</Text>
+                                    <Text muted size={12}>Six Period</Text>
+                                </Block>
+                                <Block middle>
+                                    <Text bold size={12} style={{marginBottom: 8}}>{lunchPeriodStatus}</Text>
+                                    <Text muted size={12}>Lunch Period</Text>
+                                </Block>
+                                <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                <Block middle>
+                                    <Text bold size={12} style={{marginBottom: 8}}>{status}</Text>
+                                    <Text muted size={12}>Status</Text>
+                                </Block>
                             </Block>
-                            <Block row style={{ padding: 2 }}>
-                                <Text bold size={20} style={{marginBottom: 4}}>Long ID:</Text>
-                                <Text muted size={20} style={{color:'blue', paddingHorizontal:4}}>{longId}</Text>
-                            </Block>
-                            <Block row style={{ padding: 2 }}>
-                                <Text bold size={20} style={{marginBottom: 6}}>Status:</Text>
-                                <Text muted size={20} style={{color:'red', paddingHorizontal:4}}>{status}</Text>
                             </Block>
                         </ScrollView>
                     </Block>

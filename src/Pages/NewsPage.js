@@ -10,68 +10,43 @@ export default class NewsPage extends React.Component {
         super(props);
         this.state = {
           animating: false,
-          category_id: '',
           items: []
         };
       }
     
       componentDidMount() {
         this.getUserId();
-        this.loadArticle();
       }
     
-      closeActivityIndicator = () => setTimeout(() => this.setState({
-        animating: false }), 3000)
-
-
       getUserId = async () => {
         const catTitle = await AsyncStorage.getItem('catTitle') ;
-        this.setState({ category_id: catTitle})
+        this.loadArticle(catTitle);
         return;
       }
-
-      handleRefresh = () => {
-        this.setState({ loading: true, items: [] }, this.loadArticle);
-      }
     
-      //https://news-mobile-app.herokuapp.com/api/article/title/Business
-    
-      loadArticle = () => {
-       //if (!this.state.loading) this.setState({ loading: true });
-        getArticle(this.state.category_id)
-          .then(response => {
-            this.setState(prevState =>
-              ({
-                loading: false,
-                items: response.news[0].items
-              }));
-          }).catch(() => {
-            this.setState({ loading: false });
-          })
-      }
-
-    /*
-      loadArticle =  () => {
-          fetch(`https://news-mobile-app.herokuapp.com/api/article/title/${this.state.category_id}`, {
-              method: 'GET'
-          })
-              .then((response) => response.json())
-              .then((responseJson) => {
-
-                this.setState({
-                    //data: responseJson,
-                    items: responseJson.news[0].items
-                })
+      loadArticle =  (catTitle) => {
+        fetch(`https://news-mobile-app.herokuapp.com/api/article/title/${catTitle}`, {
+            method: 'GET'
+      })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              this.setState({
+                items: responseJson.news[0].items
               })
-              .catch((error) => {
-              console.error(error);
-              });  
+            })
+            .catch((error) => {
+            console.error(error);
+            });  
       }
-*/
+    
       openArticle = (item) => {
-        console.log('detail item');
-        console.log(item);
-        this.props.navigation.navigate('Details', { article: item, title: item.title })
+        AsyncStorage.setItem('articleTitle', item.title);
+        AsyncStorage.setItem('articleImage', item.image);
+        AsyncStorage.setItem('articleContent', item.content);
+        AsyncStorage.setItem('articleViews', item.views);
+        AsyncStorage.setItem('articleCategory', item.category);
+        AsyncStorage.setItem('articlePublishedAt', item.published_at);
+        this.props.navigation.navigate('Details');
       }
     render(){
         return(
@@ -80,9 +55,7 @@ export default class NewsPage extends React.Component {
               data={this.state.items}
               renderItem={({ item }) => <Article article={item} onPress={() => this.openArticle(item)} />}
               keyExtractor={item => item.title}
-              refreshing={this.state.loading}
-              onRefresh={this.handleRefresh}
-          />
+            />
         );
     }
 }   

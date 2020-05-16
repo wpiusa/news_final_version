@@ -1,5 +1,14 @@
 import React from 'react';
-import { Alert, Dimensions, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { 
+  Alert, 
+  Dimensions, 
+  StyleSheet, 
+  KeyboardAvoidingView, 
+  Platform, 
+  View,
+  AsyncStorage
+} from 'react-native';
+
 import { Block, Button, Input, Text, theme, } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 import { materialTheme } from '../constants/';
@@ -12,6 +21,24 @@ export default class Support extends React.Component {
   state = {
     title: '',
     desc: '',
+    user:'',
+    email: '',
+    school: '',
+  }
+
+  componentDidMount() {
+    this.getUserInfo();
+  }
+  getUserInfo = async () => {
+    const user = await AsyncStorage.getItem('user') ;
+    const email = await AsyncStorage.getItem('userid') ;
+    const school = await AsyncStorage.getItem('school') ;
+    this.setState({
+      user,
+      email,
+      school
+    })
+    return;
   }
 
   handleChange = (name, value) => {
@@ -19,8 +46,8 @@ export default class Support extends React.Component {
   }
 
   handlePress = () => {
-    const { title, desc } = this.state;
-    fetch('https://news-mobile-app.herokuapp.com/api/users/login', {
+    const { title, desc, email, school, user } = this.state;
+    fetch('https://news-mobile-app.herokuapp.com/api/support', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,6 +55,9 @@ export default class Support extends React.Component {
         body: JSON.stringify({
           title,
           desc,
+          email,
+          school,
+          name: user,
         })
     })
       .then((resp) => {
@@ -44,106 +74,101 @@ export default class Support extends React.Component {
       return
     } 
 
-    if (!this.state.desc) {
-      Alert.alert('Enter the support decription!');
-      return
-    }
     this.handlePress();
  }
- 
+
   render() {
-  
     return (
       <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0.25, y: 1.1 }}
-        locations={[0.2, 1]}
-        colors={['#6C24AA', '#15002B']}
-        style={[styles.signup, { flex: 1, paddingTop: theme.SIZES.BASE * 1 }]}>
-        <Block flex middle>
-          <KeyboardAvoidingView behavior="padding" enabled>
-            <Block style={{ marginBottom: height * 0.01 }}>
-              <Block row center space="between" style={{ marginVertical: theme.SIZES.BASE * 1.275 }}>
-                <Block flex middle right>
-                    <Button
-                        round
-                        onlyIcon
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        icon="home"
-                        iconFamily="font-awesome"
-                        color={theme.COLORS.FACEBOOK}
-                        shadowless
-                        iconColor={theme.COLORS.WHITE}
-                        style={styles.topIcon}
-                    />
-                </Block>
-                <Block flex middle center>
-                    <Button
-                        round
-                        onlyIcon
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        icon="users"
-                        iconFamily="font-awesome"
-                        color={theme.COLORS.BASE}
-                        shadowless
-                        iconColor={theme.COLORS.WHITE}
-                        style={styles.topIcon}
-                    />
-                </Block>
-                <Block flex middle left>
-                    <Button
-                        round
-                        onlyIcon
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        icon="gear"
-                        iconFamily="font-awesome"
-                        color={theme.COLORS.DRIBBBLE}
-                        shadowless
-                        iconColor={theme.COLORS.WHITE}
-                        style={styles.topIcon}
-                    />
-                </Block>
-              </Block>
-            </Block>
-
-            <Block flex={1} center space="between">
-              <Block center>
-                <Input
-                  bgColor='transparent'
-                  placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
-                  borderless
-                  color="white"
-                  placeholder="Support Title"
-                  autoCapitalize="none"
-                  style={[styles.input, styles.inputActive]}
-                  onChangeText={text => this.handleChange('title', text)}
-                />
-                <Block style={styles.container}>
-                    <AutoGrowingTextInput 
-                      style={[styles.input, styles.textArea]} 
-                      placeholder={'Your Support Message'}
-                />
-                </Block>
-                <Block style={styles.container}>
-                  
-                  <Block flex top style={{ marginTop: 10 }}>
-                    <Button
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0.25, y: 1.1 }}
+      locations={[0.2, 1]}
+      colors={['#6C24AA', '#15002B']}
+      style={[styles.signup, { flex: 1, paddingTop: theme.SIZES.BASE * 1 }]}>
+      <Block flex middle>
+        <KeyboardAvoidingView behavior="padding" enabled>
+          <Block style={{ marginBottom: height * 0.01 }}>
+            <Block row center space="between" style={{ marginVertical: theme.SIZES.BASE * 1.275 }}>
+              <Block flex middle right>
+                  <Button
+                      round
+                      onlyIcon
+                      iconSize={theme.SIZES.BASE * 1.625}
+                      icon="home"
+                      iconFamily="font-awesome"
+                      color={theme.COLORS.FACEBOOK}
                       shadowless
-                      style={{ height: 48 }}
-                      color={materialTheme.COLORS.BUTTON_COLOR}
-                      onPress={() => this.userSupport()}
-                    >
-                      Submit Support
-                    </Button>
-                </Block>
+                      iconColor={theme.COLORS.WHITE}
+                      style={styles.topIcon}
+                  />
               </Block>
-          
+              <Block flex middle center>
+                  <Button
+                      round
+                      onlyIcon
+                      iconSize={theme.SIZES.BASE * 1.625}
+                      icon="users"
+                      iconFamily="font-awesome"
+                      color={theme.COLORS.BASE}
+                      shadowless
+                      iconColor={theme.COLORS.WHITE}
+                      style={styles.topIcon}
+                  />
               </Block>
-              
+              <Block flex middle left>
+                  <Button
+                      round
+                      onlyIcon
+                      iconSize={theme.SIZES.BASE * 1.625}
+                      icon="gear"
+                      iconFamily="font-awesome"
+                      color={theme.COLORS.DRIBBBLE}
+                      shadowless
+                      iconColor={theme.COLORS.WHITE}
+                      style={styles.topIcon}
+                  />
+              </Block>
             </Block>
-          </KeyboardAvoidingView>
-        </Block>
-      </LinearGradient>
+          </Block>
+
+          <Block flex={1} center space="between">
+            <Block center>
+              <Input
+                bgColor='transparent'
+                placeholderTextColor={materialTheme.COLORS.PLACEHOLDER}
+                borderless
+                color="white"
+                placeholder="Support Title"
+                autoCapitalize="none"
+                style={[styles.input, styles.inputActive]}
+                onChangeText={text => this.handleChange('title', text)}
+              />
+              <Block style={styles.container}>
+                  <AutoGrowingTextInput 
+                    style={[styles.input, styles.textArea]} 
+                    placeholder={'Your Support Message'}
+              />
+              </Block>
+              <Block style={styles.container}>
+                
+                <Block flex top style={{ marginTop: 10 }}>
+                  <Button
+                    shadowless
+                    style={{ height: 48 }}
+                    color={materialTheme.COLORS.BUTTON_COLOR}
+                    onPress={() => this.userSupport()}
+                  >
+                    Submit Support
+                  </Button>
+              </Block>
+            </Block>
+        
+            </Block>
+            
+          </Block>
+        </KeyboardAvoidingView>
+      </Block>
+    </LinearGradient>
     );
   }
 }

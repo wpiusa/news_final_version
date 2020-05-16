@@ -16,8 +16,8 @@ export default class Menu extends React.Component {
                     onPress={() => this.props.navigation.navigate('Category')}>
                   <ImageBackground
                           source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/news.jpeg' }}
-                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 252 }]}
-                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 252 }}
+                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
+                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
                       >
                       <Block style={styles.categoryTitle}>
                           <Text size={18} bold color={theme.COLORS.WHITE}>News</Text>
@@ -33,8 +33,8 @@ export default class Menu extends React.Component {
                     onPress={() => this.props.navigation.navigate('Profile')}>
                   <ImageBackground
                           source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/schoolID.jpeg' }}
-                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 252 }]}
-                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 252 }}
+                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
+                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
                       >
                       <Block style={styles.categoryTitle}>
                           <Text size={18} bold color={theme.COLORS.WHITE}>Digital ID</Text>
@@ -50,11 +50,27 @@ export default class Menu extends React.Component {
                     onPress={() => this.props.navigation.navigate('Support')}>
                   <ImageBackground
                           source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/support.jpeg' }}
-                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 252 }]}
-                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 252 }}
+                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
+                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
                       >
                       <Block style={styles.categoryTitle}>
                           <Text size={18} bold color={theme.COLORS.WHITE}>Support</Text>
+                      </Block>
+                  </ImageBackground>
+                </TouchableOpacity> 
+            </Block>
+        </Block>
+        <Block flex>
+            <Block flex card style={[styles.category, styles.shadow]}>
+                <TouchableOpacity 
+                    onPress={() => this.props.navigation.navigate('Login')}>
+                  <ImageBackground
+                          source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/logout.jpeg' }}
+                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
+                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
+                      >
+                      <Block style={styles.categoryTitle}>
+                          <Text size={18} bold color={theme.COLORS.WHITE}>Log Out</Text>
                       </Block>
                   </ImageBackground>
                 </TouchableOpacity> 

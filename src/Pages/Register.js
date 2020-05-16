@@ -1,5 +1,14 @@
 import React from 'react';
-import { Alert, Dimensions, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { 
+  Alert, 
+  Dimensions, 
+  StyleSheet, 
+  KeyboardAvoidingView, 
+  Platform, 
+  View,
+  AsyncStorage
+ } from 'react-native';
+
 import RNPickerSelect from 'react-native-picker-select';
 import { Block, Button, Input, Text, theme, } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -56,7 +65,7 @@ export default class SignUp extends React.Component {
   }
 
   handlePress = () => {
-    const { user, email, password, shortId, longId, grade } = this.state;
+    const { user, email, password, shortId, longId, grade, school } = this.state;
     fetch('https://news-mobile-app.herokuapp.com/api/users/register', {
         method: 'POST',
         headers: {
@@ -68,10 +77,13 @@ export default class SignUp extends React.Component {
           password,
           shortId,
           longId,
-          grade
+          grade,
+          school
         })
     })
       .then((resp) => {
+          AsyncStorage.setItem('user', user);
+          AsyncStorage.setItem('school', school);
           this.props.navigation.navigate('Login');
       })
       .catch((error) => {

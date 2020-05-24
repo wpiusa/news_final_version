@@ -62,7 +62,9 @@ export default class Profile extends React.Component {
             status, 
             ASB, 
             sixPeriod, 
-            lunchPeriod 
+            lunchPeriod,
+            reject,
+            rejectReason, 
         } = data;
         const asbStatus = ASB ? "Yes": "No";
         const sixPeriodStatus = sixPeriod ? "Yes": "No";
@@ -112,12 +114,16 @@ export default class Profile extends React.Component {
                                     <Text bold size={12} style={{marginBottom: 8}}>{lunchPeriodStatus}</Text>
                                     <Text muted size={12}>Lunch Period</Text>
                                 </Block>
-                                <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
-                                <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>{status}</Text>
-                                    <Text muted size={12}>Status</Text>
-                                </Block>
                             </Block>
+                            <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                <Block middle>
+                                        <Text bold size={12} style={{marginBottom: 8}}>{status}</Text>
+                                        <Text muted size={12}>Status</Text>
+                                </Block>
+                                {reject &&<Block middle>
+                                        <Text bold size={12} style={{marginBottom: 8}}>{rejectReason}</Text>
+                                        <Text muted size={12}>Reject Reason</Text>
+                                </Block>}
                             </Block>
                         </ScrollView>
                     </Block>

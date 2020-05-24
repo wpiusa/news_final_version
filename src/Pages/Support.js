@@ -20,7 +20,7 @@ const { height, width } = Dimensions.get('window');
 export default class Support extends React.Component {
   state = {
     title: '',
-    desc: '',
+    description: '',
     user:'',
     email: '',
     school: '',
@@ -38,6 +38,7 @@ export default class Support extends React.Component {
       email,
       school
     })
+   
     return;
   }
 
@@ -46,7 +47,7 @@ export default class Support extends React.Component {
   }
 
   handlePress = () => {
-    const { title, desc, email, school, user } = this.state;
+    const { title, description, email, school, user } = this.state;
     fetch('https://news-mobile-app.herokuapp.com/api/support', {
         method: 'POST',
         headers: {
@@ -54,7 +55,7 @@ export default class Support extends React.Component {
         },
         body: JSON.stringify({
           title,
-          desc,
+          description,
           email,
           school,
           name: user,
@@ -89,33 +90,7 @@ export default class Support extends React.Component {
         <KeyboardAvoidingView behavior="padding" enabled>
           <Block style={{ marginBottom: height * 0.01 }}>
             <Block row center space="between" style={{ marginVertical: theme.SIZES.BASE * 1.275 }}>
-              <Block flex middle right>
-                  <Button
-                      round
-                      onlyIcon
-                      iconSize={theme.SIZES.BASE * 1.625}
-                      icon="home"
-                      iconFamily="font-awesome"
-                      color={theme.COLORS.FACEBOOK}
-                      shadowless
-                      iconColor={theme.COLORS.WHITE}
-                      style={styles.topIcon}
-                  />
-              </Block>
-              <Block flex middle center>
-                  <Button
-                      round
-                      onlyIcon
-                      iconSize={theme.SIZES.BASE * 1.625}
-                      icon="users"
-                      iconFamily="font-awesome"
-                      color={theme.COLORS.BASE}
-                      shadowless
-                      iconColor={theme.COLORS.WHITE}
-                      style={styles.topIcon}
-                  />
-              </Block>
-              <Block flex middle left>
+            <Block flex middle right>
                   <Button
                       round
                       onlyIcon
@@ -143,15 +118,20 @@ export default class Support extends React.Component {
                 style={[styles.input, styles.inputActive]}
                 onChangeText={text => this.handleChange('title', text)}
               />
-              <Block style={styles.container}>
+              <Block>
+                <Text 
+                  style={{ marginTop:20, color:'white' }}>Type your Support message
+                </Text>
+              </Block>
+              <Block>
                   <AutoGrowingTextInput 
                     style={[styles.input, styles.textArea]} 
-                    placeholder={'Your Support Message'}
+                    onChangeText={text => this.handleChange('description', text)}
               />
               </Block>
               <Block style={styles.container}>
                 
-                <Block flex top style={{ marginTop: 10 }}>
+                <Block flex top style={{ marginTop: 50 }}>
                   <Button
                     shadowless
                     style={{ height: 48 }}
@@ -200,8 +180,10 @@ const styles = StyleSheet.create({
         borderBottomColor: "white"
     },
     textArea: {
-      borderBottomColor: "white",
-      color: 'white'
+      borderColor: "white",
+      color: 'white',
+      paddingTop:30,
+      paddingBottom:30
     },
     container: {
         flex: 1,

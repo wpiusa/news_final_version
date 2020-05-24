@@ -53,7 +53,6 @@ export default class SignUp extends React.Component {
        console.error(error);
     });
  }
-
   handleChange = (name, value) => {
     this.setState({ [name]: value});
   }
@@ -162,32 +161,6 @@ export default class SignUp extends React.Component {
                         icon="home"
                         iconFamily="font-awesome"
                         color={theme.COLORS.FACEBOOK}
-                        shadowless
-                        iconColor={theme.COLORS.WHITE}
-                        style={styles.topIcon}
-                    />
-                </Block>
-                <Block flex middle center>
-                    <Button
-                        round
-                        onlyIcon
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        icon="users"
-                        iconFamily="font-awesome"
-                        color={theme.COLORS.BASE}
-                        shadowless
-                        iconColor={theme.COLORS.WHITE}
-                        style={styles.topIcon}
-                    />
-                </Block>
-                <Block flex middle left>
-                    <Button
-                        round
-                        onlyIcon
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        icon="gear"
-                        iconFamily="font-awesome"
-                        color={theme.COLORS.DRIBBBLE}
                         shadowless
                         iconColor={theme.COLORS.WHITE}
                         style={styles.topIcon}

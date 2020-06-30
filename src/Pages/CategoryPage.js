@@ -12,8 +12,7 @@ import {
 } from "react-native";
 import Constants from 'expo-constants';
 import Colors from '../../Colors';
-import { getCategories } from '../../Api';
-
+import { getCategory } from '../Components/CategoryApi'
 export default class CategoryPage extends React.Component {
     static navigationOptions = {
         headerShown: false
@@ -29,9 +28,9 @@ export default class CategoryPage extends React.Component {
     }
 
     loadCategory = async () => {
-        getCategories().then(
+        getCategory().then(
             response => {
-                this.setState({ loading: false, categories: response.items })
+                this.setState({ loading: false, categories: response })
             }).catch(() => {
                 this.setState({ loading: false });
             })
@@ -42,7 +41,7 @@ export default class CategoryPage extends React.Component {
     }
     
     openCategory = (item) => {
-        AsyncStorage.setItem('catTitle', item.title);
+        AsyncStorage.setItem('catTitle', item.category);
         this.props.navigation.navigate('News');
     }
 
@@ -58,7 +57,6 @@ export default class CategoryPage extends React.Component {
     render(){
         return(
             <SafeAreaView style={{ backgroundColor: Colors.background, height: '100%', paddingTop: Constants.statusBarHeight }}>
-                <Text style={styles.category}>Categories</Text>
                 <StatusBar hidden={false} barStyle={Colors.statusBarStyle} />
                 <FlatList
                     data={this.state.categories}
@@ -86,7 +84,8 @@ const styles = StyleSheet.create({
         shadowColor: Colors.cardShadow,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 3
+        shadowRadius: 3,
+        marginTop: 40,
     },
     category: {
         color: Colors.text,

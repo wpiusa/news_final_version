@@ -85,45 +85,55 @@ export default class Profile extends React.Component {
                         <ScrollView verticL={true} showsVerticalScrollIndicator={false}>
                             <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
                                     <Block middle>
-                                        <Text bold size={12} style={{marginBottom: 8}}>{name}</Text>
+                                        <Text bold size={16} style={{marginBottom: 8}}>{name}</Text>
                                     </Block>
                                     <Block middle>
-                                        <Text bold size={12} style={{marginBottom: 8}}>{grade}</Text>
+                                        <Text bold size={16} style={{marginBottom: 8}}>{grade}</Text>
                                     </Block>
                            </Block>
-                           <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
-                                <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>{shortId}</Text>
-                                    <Text muted size={12}>Short ID</Text>
+                            <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                <Block>
+                                    <Text size={14} style={{marginBottom: 8}}>Short ID</Text>
                                 </Block>
-                                <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>{longId}</Text>
-                                    <Text muted size={12}>Long Id</Text>
+                                <Block>
+                                    <Text bold size={14} style={styles.fieldStyle}>{shortId}</Text>
                                 </Block>
                             </Block>
                             <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
                                 <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>{asbStatus}</Text>
-                                    <Text muted size={12}>ASB</Text>
+                                    <Text size={14} style={{marginBottom: 8}}>Long ID</Text>
                                 </Block>
                                 <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>{sixPeriodStatus}</Text>
-                                    <Text muted size={12}>Six Period</Text>
-                                </Block>
-                                <Block middle>
-                                    <Text bold size={12} style={{marginBottom: 8}}>{lunchPeriodStatus}</Text>
-                                    <Text muted size={12}>Lunch Period</Text>
+                                    <Text bold size={14} style={styles.fieldStyle}>{longId}</Text>
                                 </Block>
                             </Block>
-                            <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+
+                            <Block row  space="between" style={{ padding: theme.SIZES.BASE, }}>
                                 <Block middle>
-                                        <Text bold size={12} style={{marginBottom: 8}}>{status}</Text>
-                                        <Text muted size={12}>Status</Text>
+                                    <Text size={14} style={{marginBottom: 8}}>ASB</Text>
                                 </Block>
-                                {reject &&<Block middle>
-                                        <Text bold size={12} style={{marginBottom: 8}}>{rejectReason}</Text>
-                                        <Text muted size={12}>Reject Reason</Text>
-                                </Block>}
+                                <Block middle>
+                                    <Text bold size={14} style={styles.fieldStyle}>{asbStatus}</Text>
+                                </Block>
+                            </Block>
+
+                            <Block row  space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                
+                                <Block middle>
+                                    <Text size={14} style={{marginBottom: 8}}>Six Period</Text>
+                                </Block>
+                                <Block middle>
+                                    <Text bold size={14} style={styles.fieldStyle}>{sixPeriodStatus}</Text>
+                                </Block>
+                            </Block>
+                            <Block row space="between"  style={{ padding: theme.SIZES.BASE, }}>
+                                
+                                <Block middle>
+                                    <Text size={14} style={{marginBottom: 8}}>Lunch Period</Text>
+                                </Block>
+                                <Block middle>
+                                    <Text bold size={14} style={styles.fieldStyle}>{lunchPeriodStatus}</Text>
+                                </Block>
                             </Block>
                         </ScrollView>
                     </Block>
@@ -174,13 +184,16 @@ const styles = StyleSheet.create({
         marginHorizontal: theme.SIZES.BASE,
         marginTop: -theme.SIZES.BASE,
         marginBottom: 0,
-        borderTopLeftRadius: 13,
-        borderTopRightRadius: 13,
+        borderRadius:15,
         backgroundColor: theme.COLORS.WHITE,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 0 },
         shadowRadius: 8,
         shadowOpacity: 0.2,
         zIndex: 2,
+    },
+    fieldStyle: {
+        marginLeft: 30,
+        marginBottom: 6
     }
 });   

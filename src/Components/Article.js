@@ -1,95 +1,69 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import Colors from '../../Colors';
-
-let width = Dimensions.get("window").width;
+import { View, Linking, TouchableOpacity } from 'react-native';
+import { Text, Button, Card, Divider } from 'react-native-elements';
+import moment from 'moment';
 
 export default class Article extends React.Component {
-    render(){
-        const item = this.props.article;
-        return(
-            <TouchableOpacity style={this.props.horizontal ? styles.cardContentHorizontal : styles.cardContent} onPress={this.props.onPress}>
-                <View style={styles.cardImageContent}>
-                    <Image
-                        source={{ uri: item.image }}
-                        style={styles.cardImage}
-                    />
-                </View>
-                <Text style={styles.category}>{item.category.toUpperCase()}</Text>
-                <Text numberOfLines={2} style={styles.cardTitle}>{item.title}</Text>
-                <View style={styles.cardRow}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <Ionicons name="md-eye" size={16} color={Colors.cardIcon} style={{ marginRight: 5 }} />
-                        <Text style={styles.cardText}>{item.views}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <Ionicons name="md-time" size={16} color={Colors.cardIcon} style={{ marginRight: 5 }} />
-                        <Text style={styles.cardText}>{item.published_at}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        );
-    }
-} 
+  
+  render() {
+    const {
+      _id,
+      title,
+      description,
+      author,
+      headerimgURL,
+      articleURL,
+      category,
+      date
+    } = this.props.article;
+    
+    const { noteStyle, featuredTitleStyle } = styles;
+    const time = moment(date || moment.now()).fromNow();
+    const defaultImg =
+      'https://wallpaper.wiki/wp-content/uploads/2017/04/wallpaper.wiki-Images-HD-Diamond-Pattern-PIC-WPB009691.jpg';
 
-const styles = StyleSheet.create({
-    cardContent: {
-        width: width * 0.9,
-        marginLeft: width * 0.05,
-        marginBottom: 20,
-        borderRadius: 15,
-        paddingBottom: 10,
-        backgroundColor: Colors.cardContentBackground,
-        elevation: 3,
-        shadowColor: Colors.cardShadow,
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 3
-    },
-    cardContentHorizontal: {
-        width: width * 0.8,
-        marginLeft: width * 0.05,
-        marginBottom: 20,
-        borderRadius: 15,
-        paddingBottom: 10,
-        backgroundColor: Colors.cardContentBackground,
-        elevation: 3,
-        shadowColor: Colors.cardShadow,
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 3
-    },
-    cardImage: {
-        width: '100%',
-        height: 250
-    },
-    cardImageContent: {
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        overflow: 'hidden'
-    },
-    cardTitle: {
-        fontSize: 18,
-        marginVertical: 5,
-        marginHorizontal: 15,
-        height: 50,
-        fontWeight: 'bold',
-        color: Colors.cardTitle
-    },
-    cardRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 15
-    },
-    cardText: {
-        fontSize: 14,
-        color: Colors.cardText
-    },
-    category: {
-        fontSize: 14,
-        color: Colors.cardText,
-        marginHorizontal: 15,
-        marginTop: 10,
-    }
-})
+    return (
+      <TouchableOpacity
+        useForeground
+        //onPress={() => Linking.openURL(url)}
+        onPress={this.props.onPress}
+      >
+        <Card
+         
+          image={{
+            uri: headerimgURL || defaultImg
+          }}
+        >
+          <Text style={styles.featuredTitleStyle}>{title}</Text>
+          <Divider style={{ backgroundColor: '#dfe6e9' }} />
+          <Text style={{ marginBottom: 10 }}>
+            {description || 'Read More..'}
+          </Text>
+          <Divider style={{ backgroundColor: '#dfe6e9' }} />
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+          >
+            <Text style={noteStyle}>{author}</Text>
+            <Text style={noteStyle}>{time}</Text>
+          </View>
+        </Card>
+      </TouchableOpacity>
+    );
+  }
+}
+
+const styles = {
+  noteStyle: {
+    margin: 5,
+    fontStyle: 'italic',
+    color: '#b2bec3',
+    fontSize: 12
+  },
+  featuredTitleStyle: {
+    marginBottom: 15,
+    marginHorizontal: 5,
+    textShadowColor: '#00000f',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2
+  }
+};

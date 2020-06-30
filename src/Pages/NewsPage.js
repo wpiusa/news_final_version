@@ -1,61 +1,109 @@
-import React from 'react';
-import { FlatList, Text, View, AsyncStorage, ActivityIndicator,} from 'react-native';
-import Article from '../Components/Article';
-import Colors from '../../Colors';
-import { getArticle } from '../../Api';
+import React,{ Component } from 'react';
+import { 
+  Text, 
+  View, 
+  StyleSheet,
+  Platform, 
+  ActivityIndicator,
+  FlatList,
+  Alert,
+  AsyncStorage,
+} from 'react-native';
+import { Button, Card, Icon } from 'react-native-elements';
+import { MaterialIcons } from '@expo/vector-icons';
 
+import colors from '../utils/colors';
+import Article from '../Components/Article';
 export default class NewsPage extends React.Component {
-  
-    constructor(props) {
-        super(props);
-        this.state = {
-          animating: false,
-          items: []
-        };
-      }
-    
-      componentDidMount() {
-        this.getUserId();
-      }
-    
-      getUserId = async () => {
-        const catTitle = await AsyncStorage.getItem('catTitle') ;
-        this.loadArticle(catTitle);
-        return;
-      }
-    
-      loadArticle =  (catTitle) => {
-        fetch(`https://news-mobile-app.herokuapp.com/api/article/title/${catTitle}`, {
-            method: 'GET'
+  constructor(props) {
+    super(props);
+    this.state = { articles: [], refreshing: true };
+  }
+    componentDidMount() {
+      this.getUserId();
+    }
+
+    getUserId = async () => {
+      const catTitle = await AsyncStorage.getItem('catTitle') ;
+      this.fetchNews(catTitle);
+      return;
+    }
+
+    fetchNews =  (catTitle) => {
+      fetch(`https://news-mobile-app.herokuapp.com/api/article/all`, {
+          method: 'GET'
       })
-            .then((response) => response.json())
-            .then((responseJson) => {
-              this.setState({
-                items: responseJson.news[0].items
-              })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            const cat = responseJson.filter(item => item.category === catTitle);
+            this.setState({
+              articles: cat,
+              refreshing: false,
             })
-            .catch((error) => {
-            console.error(error);
-            });  
-      }
-    
-      openArticle = (item) => {
-        AsyncStorage.setItem('articleTitle', item.title);
-        AsyncStorage.setItem('articleImage', item.image);
-        AsyncStorage.setItem('articleContent', item.content);
-        AsyncStorage.setItem('articleViews', item.views);
-        AsyncStorage.setItem('articleCategory', item.category);
-        AsyncStorage.setItem('articlePublishedAt', item.published_at);
-        this.props.navigation.navigate('Details');
-      }
+          })
+          .catch((error) => {
+          console.error(error);
+          });  
+  }
+
+    handleRefresh() {
+      this.setState(
+        {
+          refreshing: true
+        },
+        () => this.fetchNews()
+      );
+    }
+
+    renderItem = ({ item }) => {  
+      const {
+        navigation: { navigate },
+      } = this.props; 
+      const { articles, articleDetailUrl }=this.state;
+      const { _id,author,title,description,category,headerimgURL,articleURL,date} = item;
+      
+      return (
+        <Article
+            article={item}
+            onPress={
+              () => {
+                console.log('on press');
+                AsyncStorage.setItem('detailArticle', item.articleURL);
+                this.props.navigation.navigate('Details');
+              }
+            }              
+        />
+      );
+    };
+
+    renderFooter = () => {
+      const { articles, articleDetailUrl }=this.state;
+      if (articles.length != 0) return null;
+      
+      return <Text style={styles.nodataTextStyle}>There is no articles avilable this time. Coming Soon !</Text>
+    };
+
     render(){
-        return(
+        if (this.state.articles){
+          return(
             <FlatList
-              style={{ backgroundColor: Colors.background, marginTop: 7 }}
-              data={this.state.items}
-              renderItem={({ item }) => <Article article={item} onPress={() => this.openArticle(item)} />}
-              keyExtractor={item => item.title}
+                data={this.state.articles}
+                renderItem={this.renderItem}
+                keyExtractor={item => item.title}
+                refreshing={this.state.refreshing}
+                onRefresh={this.handleRefresh.bind(this)}
+                ListFooterComponent={this.renderFooter}
             />
-        );
+          )
+        } 
+        
     }
 }   
+
+const styles ={
+  nodataTextStyle:{
+    margin:40,
+    fontSize:20,
+    color:'red',
+  }
+}

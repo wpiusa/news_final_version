@@ -1,124 +1,146 @@
 import React from 'react';
-import { Alert, StyleSheet, Dimensions, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
-import { Block, Text, theme, Button } from 'galio-framework';
-
-const { width } = Dimensions.get('screen');
+import { View, Image, StyleSheet, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
+import { Text } from 'galio-framework';
 
 export default class Menu extends React.Component {
   
   renderCategories = () => {
    
     return (
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.categoryList}>
-        <Block flex>
-            <Block flex card style={[styles.category, styles.shadow]}>
-                <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('Category')}>
-                  <ImageBackground
-                          source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/news.jpeg' }}
-                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
-                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
-                      >
-                      <Block style={styles.categoryTitle}>
-                          <Text size={18} bold color={theme.COLORS.WHITE}>News</Text>
-                      </Block>
-                  </ImageBackground>
-                </TouchableOpacity> 
-            </Block>
-        </Block>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.textTitle}>What would you like to do today?</Text>
+        <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity 
+                onPress={() => this.props.navigation.navigate('Category')}>
+                <View style={styles.iconBox1}>
+                    <Image
+                      style={styles.icon1}
+                      source={{
+                        uri: 'https://schoolnewsapp.s3.amazonaws.com/newsicon.jpg',
+                      }}
+                    />
+                    <Text style={styles.iconTitle}>News</Text>
+                </View>
+            </TouchableOpacity> 
 
-        <Block flex>
-            <Block flex card style={[styles.category, styles.shadow]}>
-                <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('Profile')}>
-                  <ImageBackground
-                          source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/schoolID.jpeg' }}
-                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
-                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
-                      >
-                      <Block style={styles.categoryTitle}>
-                          <Text size={18} bold color={theme.COLORS.WHITE}>Digital ID</Text>
-                      </Block>
-                  </ImageBackground>
-                </TouchableOpacity> 
-            </Block>
-        </Block>
+            <TouchableOpacity 
+                onPress={() => this.props.navigation.navigate('Profile')}>
+                <View style={styles.iconBox2}>
+                    <Image
+                      style={styles.icon1}
+                      source={{
+                        uri: 'https://schoolnewsapp.s3.amazonaws.com/school_id_image/SchoolID1.png',
+                      }}
+                    />
+                    <Text style={styles.iconTitle}>School ID</Text>
+                </View>
+            </TouchableOpacity> 
+        </View>
 
-        <Block flex>
-            <Block flex card style={[styles.category, styles.shadow]}>
-                <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('Support')}>
-                  <ImageBackground
-                          source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/support.jpeg' }}
-                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
-                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
-                      >
-                      <Block style={styles.categoryTitle}>
-                          <Text size={18} bold color={theme.COLORS.WHITE}>Support</Text>
-                      </Block>
-                  </ImageBackground>
-                </TouchableOpacity> 
-            </Block>
-        </Block>
-        <Block flex>
-            <Block flex card style={[styles.category, styles.shadow]}>
-                <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('Login')}>
-                  <ImageBackground
-                          source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/logout.jpeg' }}
-                          style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 150 }]}
-                          imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 150 }}
-                      >
-                      <Block style={styles.categoryTitle}>
-                          <Text size={18} bold color={theme.COLORS.WHITE}>Log Out</Text>
-                      </Block>
-                  </ImageBackground>
-                </TouchableOpacity> 
-            </Block>
-        </Block>
+        <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity 
+                onPress={() => this.props.navigation.navigate('Support')}>
+                <View style={styles.iconBox3}>
+                    <Image
+                      style={styles.icon1}
+                      source={{
+                        uri: 'https://schoolnewsapp.s3.amazonaws.com/support+_image/Schedule+Image1.png',
+                      }}
+                    />
+                    <Text style={styles.iconTitle}>Support</Text>
+                </View>
+            </TouchableOpacity> 
+
+            <TouchableOpacity 
+                onPress={() => this.props.navigation.navigate('Login')}>
+                <View style={styles.iconBox4}>
+                    <Image
+                      style={styles.icon1}
+                      source={{
+                        uri: 'https://schoolnewsapp.s3.amazonaws.com/logout+_image/Log+Out1.png',
+                      }}
+                    />
+                    <Text style={styles.iconTitle}>Log Out</Text>
+                </View>
+            </TouchableOpacity> 
+        </View>
+        <ImageBackground
+            source={{ uri: 'https://schoolnewsapp.s3.amazonaws.com/background/bg1.png' }}
+            style={styles.image}
+          >
+        </ImageBackground>
       </ScrollView>
     )
   }
 
   render() {
     return (
-      <Block flex center style={styles.categories}>
+      <View>
         {this.renderCategories()}
-      </Block>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  categories: {
-    width: width,
+  textTitle: {
+    marginTop: 62,
+    marginLeft: 40,
+    marginRight: 20,
+    fontFamily: 'System',
+    fontWeight: 'bold',
+    fontSize: 18,
+    display: 'flex',
+    alignItems: 'flex-end',
+    letterSpacing: -0.02
   },
-  categoryList: {
-    justifyContent: 'center',
-    paddingTop: theme.SIZES.BASE * 1.5,
+  iconBox1: {
+    marginTop: 50,
+    borderRadius: 5,
+    backgroundColor: '#FFFFFF',
+    width: 120,
+    height: 120,
+    marginLeft:80,
   },
-  category: {
-    backgroundColor: theme.COLORS.WHITE,
-    marginHorizontal: theme.SIZES.BASE,
-    marginVertical: theme.SIZES.BASE / 2,
-    borderWidth: 0,
+  iconBox2: {
+    marginTop: 50,
+    borderRadius: 5,
+    backgroundColor: '#FFFFFF',
+    width: 120,
+    height: 120,
+    marginLeft: 10
   },
-  categoryTitle: {
-    height: '100%',
-    paddingHorizontal: theme.SIZES.BASE,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+  iconBox3: {
+    marginTop: 10,
+    borderRadius: 5,
+    backgroundColor: '#FFFFFF',
+    width: 120,
+    height: 120,
+    marginLeft:80,
   },
-  imageBlock: {
-    overflow: 'hidden',
-    borderRadius: 4,
+  iconBox4: {
+    marginTop: 10,
+    borderRadius: 5,
+    backgroundColor: '#FFFFFF',
+    width: 120,
+    height: 120,
+    marginLeft: 10
   },
-  shadow: {
-    shadowColor: theme.COLORS.BLACK,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
-    shadowOpacity: 0.1,
-    elevation: 2,
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    width: 320,
+    height: 240,
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  icon1:{
+    width: 44,
+    height: 44,
+    marginTop: 27,
+    alignSelf: 'center'
+  },
+  iconTitle: {
+    alignSelf: 'center'
   }
 });
